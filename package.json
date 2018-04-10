@@ -1,0 +1,28 @@
+{
+  "name": "miniswipe",
+  "version": "0.1.0",
+  "description": "A small library to easily handle swipe gestures",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonaskuske/miniswipe.git"
+  },
+  "keywords": [
+    "js",
+    "javascript",
+    "touch",
+    "gestures",
+    "library",
+    "miniswipe",
+    "swipe"
+  ],
+  "author": "Jonas Kuske",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jonaskuske/miniswipe/issues"
+  },
+  "homepage": "https://github.com/jonaskuske/miniswipe#readme"
+}
