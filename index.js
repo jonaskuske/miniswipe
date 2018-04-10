@@ -1,64 +1,102 @@
+(function (global, indexFn) {
+  typeof exports === 'object' && typeof module !== 'undefined'
+    ? module.exports = indexFn
+    : global.Miniswipe = indexFn
+})(this, function () {
 
-export default class Swipe {
+  const error = err => { throw new Error(`[miniswipe] ${err}`) }
+  const log = msg => console.log(`[miniswipe] ${msg}`)
+  const validateFn = fn => typeof fn !== 'function' && error('Passed element is not of type "Function".')
 
+  const this$ = {
+    xDown: null,
+    yDown: null,
+    active: false,
+    actions: { right: [], left: [], up: [], down: [] },
+    handleTouchMove(e) {
+      const dir = this$.getSwipeDirection(e)
 
-  constructor({ element, click, passive }) {
+      if (!dir) return
+      if (this$.config.debug) log(`
+      swipe direction: ${dir}, calling ${this$.actions[dir].length} method(s):
+      ${this$.actions[dir].join('\n')}`
+      )
 
-    this.ـxDown = null;
-    this.ـyDown = null;
-    this.ـactions = { r: [], l: [], u: [], d: [] };
-    this.ـelement = typeof element === 'string' ? document.querySelector(element) : element;
+      this$.actions[dir].forEach(fn => fn.call(this))
+    },
+    getSwipeDirection(evt) {
+      if (!this$.xDown || !this$.yDown) return
 
-    this.ـelement.addEventListener('touchstart', e => {
-      this.ـxDown = e.touches[0].clientX;
-      this.ـyDown = e.touches[0].clientY;
-    }, { passive: true });
-    this.ـelement.addEventListener('touchmove', e => {
-      const dir = this.ـhandleTouchMove(e);
-      this.ـactions[dir].forEach(fn => fn());
-    }, { passive: true });
-  }
+      const xUp = evt.touches && evt.touches[0] && evt.touches[0].clientX
+      const yUp = evt.touches && evt.touches[0] && evt.touches[0].clientY
+      const xDiff = this$.xDown - xUp
+      const yDiff = this$.yDown - yUp
+      this$.xDown = null
+      this$.yDown = null
 
-  left(callback) {
-    this.ـl = callback;
-    return this;
-  }
-
-  right(callback) {
-    this.ـr = callback;
-    return this;
-  }
-
-  up(callback) {
-    this.ـu = callback;
-    return this;
-  }
-
-  down(callback) {
-    this.ـd = callback;
-    return this;
-  }
-
-  ـhandleTouchMove(evt) {
-    if (!this.ـxDown || !this.ـyDown) return;
-
-    const xUp = evt.touches[0].clientX;
-    const yUp = evt.touches[0].clientY;
-    const xDiff = this.ـxDown - xUp;
-    const yDiff = this.ـyDown - yUp;
-
-    if (Math.abs(xDiff) > Math.abs(yDiff)) {
-      xDiff > 0
-        ? 'l'
-        : 'r';
+      if (Math.abs(xDiff) > Math.abs(yDiff)) {
+        return xDiff > 0
+          ? 'left'
+          : 'right'
+      }
+      else {
+        return yDiff > 0
+          ? 'up'
+          : 'down'
+      }
     }
-    else {
-      yDiff > 0
-        ? 'u'
-        : 'd';
-    }
-    this.ـxDown = null;
-    this.ـyDown = null;
   }
 
-}
+
+  class SwipeHandler {
+
+    constructor(element, { click = false, passive = false, ...config } = {}) {
+      this$.config = config || {}
+      this$.element = typeof element === 'string' ? document.querySelector(element) : element
+      this$.element.addEventListener('touchstart', e => {
+        this$.xDown = e && e.touches && e.touches[0] && e.touches[0].clientX
+        this$.yDown = e && e.touches && e.touches[0] && e.touches[0].clientY
+      })
+    }
+
+    start() {
+      if (this$.active) error('Can\'t start swipeHandler - it is running already.')
+      this$.element.addEventListener('touchmove', this$.handleTouchMove)
+      this$.active = true
+    }
+
+    stop() {
+      if (!this$.active) error('Can\'t stop swipeHandler - it is inactive already.')
+      this$.element.removeEventListener('touchmove', this$.handleTouchMove)
+      this$.active = false
+    }
+
+    left(callback) {
+      validateFn(callback)
+      this$.actions.left.push(callback)
+      return this
+    }
+
+    right(callback) {
+      validateFn(callback)
+      this$.actions.right.push(callback)
+      return this
+    }
+
+    up(callback) {
+      validateFn(callback)
+      this$.actions.up.push(callback)
+      return this
+    }
+
+    down(callback) {
+      validateFn(callback)
+      this$.actions.down.push(callback)
+      return this
+    }
+
+  }
+
+  return new SwipeHandler(...arguments)
+
+})
