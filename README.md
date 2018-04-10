@@ -21,16 +21,18 @@ This library is in a **very early** state and built mostly for educational purpo
 
 ## Usage
 
-### `Miniswipe`: Create a new handler for touch events
+### `Miniswipe`
+#### Create a new handler for touch events
 
 ```javascript
 const newHandler = new Miniswipe(document.body, {debug: true})
 ```
 ##### Arguments:
-`{string | HTMLElement} The element on which the handler listens for touch gestures`
+`{string | HTMLElement} The element on which the handler listens for touch gestures`  
 `{Object} Additional options. As of now, only debug is supported. When set to true, miniswipe logs registered swipes and the subsequently executed functions`
 
-### `left`,`right`,`up`,`down`: Associate methods with swipe gestures
+### `left`,`right`,`up`,`down`  
+#### Associate methods with swipe gestures
 
 ```javascript
   newHandler
@@ -40,12 +42,15 @@ const newHandler = new Miniswipe(document.body, {debug: true})
     .down(() => console.log('User swiped down!'))
 ```
 
-### `start`: Start listening for touch events
+### `start`  
+#### Start listening for touch events
 
 ```javascript
   newHandler.start()
 ```
-### `stop`: Stop listening for touch events
+### `stop`  
+#### Stop listening for touch events
+
 ```javascript
   newHandler.stop()
 ```
