@@ -50,7 +50,7 @@
 
   class SwipeHandler {
 
-    constructor(element, { click = false, passive = false, ...config } = {}) {
+    constructor(element, config) {
       this$.config = config || {}
       this$.element = typeof element === 'string' ? document.querySelector(element) : element
       this$.element.addEventListener('touchstart', e => {
