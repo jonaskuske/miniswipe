@@ -7,9 +7,7 @@ If you look for a polished, production-grade and feature-rich library for handli
 This library is in a **very early** state and built mostly for educational purposes.
 
 ## Installation
-
 ### NPM
-
 ````bash
   npm install miniswipe --save
 ````
@@ -18,22 +16,17 @@ This library is in a **very early** state and built mostly for educational purpo
 ````html
 <script type="text/javascript" src="index.js"></script>
 ````
-
 ## Usage
-
 ### `Miniswipe`
 #### Create a new handler for touch events
-
 ```javascript
 const newHandler = new Miniswipe(document.body, {debug: true})
 ```
 ##### Arguments:
 `{string | HTMLElement} The element on which the handler listens for touch gestures`  
 `{Object} Additional options. As of now, only debug is supported. When set to true, miniswipe logs registered swipes and the subsequently executed functions`
-
 ### `left`,`right`,`up`,`down`  
 #### Associate methods with swipe gestures
-
 ```javascript
   newHandler
     .left(() => console.log('User swiped left!'))
@@ -41,16 +34,13 @@ const newHandler = new Miniswipe(document.body, {debug: true})
     .up(() => console.log('User swiped up!'))
     .down(() => console.log('User swiped down!'))
 ```
-
 ### `start`  
 #### Start listening for touch events
-
 ```javascript
   newHandler.start()
 ```
 ### `stop`  
 #### Stop listening for touch events
-
 ```javascript
   newHandler.stop()
 ```
