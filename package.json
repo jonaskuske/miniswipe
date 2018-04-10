@@ -1,6 +1,6 @@
 {
   "name": "miniswipe",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A small library to easily handle swipe gestures",
   "main": "index.js",
   "scripts": {

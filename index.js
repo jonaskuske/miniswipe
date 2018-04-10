@@ -75,6 +75,7 @@
         if (this$.active) error('Can\'t start swipeHandler - it is running already.')
         this$.element.addEventListener('touchmove', this$.handleTouchMove)
         this$.active = true
+        return this
       }
 
       /**
@@ -84,6 +85,7 @@
         if (!this$.active) error('Can\'t stop swipeHandler - it is inactive already.')
         this$.element.removeEventListener('touchmove', this$.handleTouchMove)
         this$.active = false
+        return this
       }
 
       /**
