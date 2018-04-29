@@ -20,7 +20,18 @@
         color: #fff;
         background: lightslategray;
         transition: background-color 170ms ease-out;
+      }
+
+      body,
+      button {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      }
+
+      p,
+      h1,
+      label,
+      button {
+        user-select: none;
       }
 
       p {
@@ -46,11 +57,12 @@
       button {
         position: relative;
         height: 2rem;
-        padding: 7px;
+        padding: 0 9px;
         border-radius: 15px;
         cursor: pointer;
         outline: none;
         color: #fff;
+        font-size: 0.8rem;
         border: 2px solid white;
         background: rgba(0, 0, 0, 0.5);
       }
@@ -69,6 +81,35 @@
         pointer-events: none;
         color: rgba(255, 255, 255, 0.5);
       }
+
+      div>div {
+        width: 100%;
+      }
+
+      input[type=checkbox] {
+        display: none;
+      }
+
+      label {
+        position: relative;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 15px;
+        border: 2px solid rgba(0, 0, 0, 0.2);
+        color: white;
+        height: 1.7rem;
+        padding: 0 9px;
+        font-size: 0.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        margin-top: 2rem;
+      }
+
+      input:checked+label {
+        background: rgba(0, 0, 0, 0.5);
+        border: 2px solid white;
+      }
     </style>
   </head>
 
@@ -76,30 +117,46 @@
 
     <h1>miniswipe</h1>
     <p></p>
-    <button data-state="miniswipe is active">Toggle swipe detection</button>
+    <div>
+      <button data-state="miniswipe is active">Toggle swipe detection</button>
+      <div></div>
+      <input type="checkbox" name="Allow clicks" id="allow-click">
+      <label for="allow-click">Handle mouse gestures</label>
+    </div>
 
     <script>
       document.addEventListener('DOMContentLoaded', () => {
         const output = document.querySelector('p')
-        const swipeHandler = new Miniswipe(document.body, { debug: true })
+        let swipeHandler
 
-        swipeHandler
-          .left(function (e) { this.style.background = 'green' })
-          .right(function (e) { this.style.background = 'rebeccapurple' })
-          .down(function (e) { this.style.background = 'darkblue' })
-          .up(function (e) { this.style.background = 'darkred' })
+        function createMiniswipe(options) {
+          const miniswipe = new Miniswipe(document.body, options)
 
-        swipeHandler
-          .left((e) => output.textContent = 'LEFT')
-          .right((e) => output.textContent = 'RIGHT')
-          .down((e) => output.textContent = 'DOWN')
-          .up((e) => output.textContent = 'UP')
+          miniswipe
+            .left(function (e) { this.style.background = 'green' })
+            .right(function (e) { this.style.background = 'rebeccapurple' })
+            .down(function (e) { this.style.background = 'darkblue' })
+            .up(function (e) { this.style.background = 'darkred' })
 
-        swipeHandler.start()
+          miniswipe
+            .left((e) => output.textContent = 'LEFT')
+            .right((e) => output.textContent = 'RIGHT')
+            .down((e) => output.textContent = 'DOWN')
+            .up((e) => output.textContent = 'UP')
+
+          return miniswipe.start()
+        }
+
+        swipeHandler = createMiniswipe({ debug: true, allowClick: false });
 
         document.querySelector('button').addEventListener('click', function () {
-          swipeHandler.active ? swipeHandler.stop() : swipeHandler.start();
-          this.dataset.state = `miniswipe is ${swipeHandler.active ? 'active' : 'not active'}`;
+          swipeHandler.active ? swipeHandler.stop() : swipeHandler.start()
+          this.dataset.state = `miniswipe is ${swipeHandler.active ? 'active' : 'not active'}`
+        })
+
+        document.querySelector('input').addEventListener('click', function () {
+          swipeHandler.active && swipeHandler.stop()
+          swipeHandler = createMiniswipe({ debug: true, allowClick: this.checked })
         })
       })
     </script>
