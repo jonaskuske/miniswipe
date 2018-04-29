@@ -8,6 +8,7 @@
    * Create a swipe handler for a given DOM Node.
    * @typedef {Object} Options
    * @property {boolean} debug If set to true, miniswipe will log every registered swipe gesture.
+   * @property {boolean} allowClick If set to true, miniswipe will also handle mouse gestures.
    * @param {string|HTMLElement} element A CSS selector or a DOM Node.
    * @param {Options} options Additional options.
    */
@@ -35,8 +36,8 @@
       getSwipeDirection(evt) {
         if (!this$.xDown || !this$.yDown) return
 
-        const xUp = evt.touches && evt.touches[0] && evt.touches[0].clientX
-        const yUp = evt.touches && evt.touches[0] && evt.touches[0].clientY
+        const xUp = evt.clientX || evt.touches && evt.touches[0] && evt.touches[0].clientX
+        const yUp = evt.clientY || evt.touches && evt.touches[0] && evt.touches[0].clientY
         const xDiff = this$.xDown - xUp
         const yDiff = this$.yDown - yUp
         this$.xDown = null
@@ -47,7 +48,7 @@
             ? 'left'
             : 'right'
         }
-        else {
+        else if (Math.abs(xDiff) < Math.abs(yDiff)) {
           return yDiff > 0
             ? 'up'
             : 'down'
@@ -59,12 +60,16 @@
     class SwipeHandler {
 
       constructor(element, options) {
-        this.active = false;
+        this.active = false
         this$.config = options || {}
         this$.element = typeof element === 'string' ? document.querySelector(element) : element
         this$.element.addEventListener('touchstart', e => {
-          this$.xDown = e && e.touches && e.touches[0] && e.touches[0].clientX
-          this$.yDown = e && e.touches && e.touches[0] && e.touches[0].clientY
+          this$.xDown = e.touches && e.touches[0] && e.touches[0].clientX
+          this$.yDown = e.touches && e.touches[0] && e.touches[0].clientY
+        })
+        this$.element.addEventListener('mousedown', e => {
+          this$.xDown = e.clientX
+          this$.yDown = e.clientY
         })
       }
 
@@ -73,8 +78,12 @@
        */
       start() {
         if (this.active) error('Can\'t start swipeHandler - it is running already.')
+
         this$.element.addEventListener('touchmove', this$.handleTouchMove)
+        const { allowClick } = this$.config
+        allowClick && this$.element.addEventListener('mouseup', this$.handleTouchMove)
         this.active = true
+
         return this
       }
 
@@ -83,8 +92,11 @@
        */
       stop() {
         if (!this.active) error('Can\'t stop swipeHandler - it is inactive already.')
+
+        this$.element.removeEventListener('mouseup', this$.handleTouchMove)
         this$.element.removeEventListener('touchmove', this$.handleTouchMove)
         this.active = false
+
         return this
       }
 
