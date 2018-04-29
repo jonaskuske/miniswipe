@@ -18,7 +18,7 @@
         align-items: center;
         text-align: center;
         color: #fff;
-        background: lightslategray;
+        background: #186fc2;
         transition: background-color 170ms ease-out;
       }
 
@@ -31,6 +31,9 @@
       h1,
       label,
       button {
+        -ms-user-select: none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
         user-select: none;
       }
 
@@ -52,34 +55,6 @@
 
       p:empty::after {
         content: 'No swipes registered yet';
-      }
-
-      button {
-        position: relative;
-        height: 2rem;
-        padding: 0 9px;
-        border-radius: 15px;
-        cursor: pointer;
-        outline: none;
-        color: #fff;
-        font-size: 0.8rem;
-        border: 2px solid white;
-        background: rgba(0, 0, 0, 0.5);
-      }
-
-      button:hover {
-        background: rgba(0, 0, 0, 0.3);
-      }
-
-      button::before {
-        content: attr(data-state);
-        position: absolute;
-        width: 100%;
-        top: -1.5rem;
-        left: 50%;
-        transform: translateX(-50%);
-        pointer-events: none;
-        color: rgba(255, 255, 255, 0.5);
       }
 
       div>div {
@@ -106,6 +81,15 @@
         margin-top: 2rem;
       }
 
+      label::before {
+        content: attr(data-state);
+        position: absolute;
+        width: 100%;
+        top: -1.5rem;
+        pointer-events: none;
+        color: rgba(255, 255, 255, 0.5);
+      }
+
       input:checked+label {
         background: rgba(0, 0, 0, 0.5);
         border: 2px solid white;
@@ -118,10 +102,11 @@
     <h1>miniswipe</h1>
     <p></p>
     <div>
-      <button data-state="miniswipe is active">Toggle swipe detection</button>
+      <input type="checkbox" id="toggle-miniswipe" checked>
+      <label for="toggle-miniswipe" data-state="miniswipe is active">Toggle miniswipe</label>
       <div></div>
-      <input type="checkbox" name="Allow clicks" id="allow-click">
-      <label for="allow-click">Handle mouse gestures</label>
+      <input type="checkbox" id="toggle-mouse">
+      <label for="toggle-mouse" data-state="mouse detection is off">Toggle mouse detection</label>
     </div>
 
     <script>
@@ -149,14 +134,17 @@
 
         swipeHandler = createMiniswipe({ debug: true, allowClick: false });
 
-        document.querySelector('button').addEventListener('click', function () {
+        const getLabel = ({ id }) => document.querySelector(`label[for=${id}]`)
+
+        document.querySelector('#toggle-miniswipe').addEventListener('click', function () {
           swipeHandler.active ? swipeHandler.stop() : swipeHandler.start()
-          this.dataset.state = `miniswipe is ${swipeHandler.active ? 'active' : 'not active'}`
+          getLabel(this).dataset.state = `miniswipe is ${this.checked ? 'active' : 'not active'}`
         })
 
-        document.querySelector('input').addEventListener('click', function () {
+        document.querySelector('#toggle-mouse').addEventListener('click', function () {
           swipeHandler.active && swipeHandler.stop()
           swipeHandler = createMiniswipe({ debug: true, allowClick: this.checked })
+          getLabel(this).dataset.state = `mouse detection is ${this.checked ? 'on' : 'off'}`
         })
       })
     </script>
