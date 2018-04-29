@@ -26,9 +26,9 @@
         const dir = this$.getSwipeDirection(e)
 
         if (!dir) return
-        if (this$.config.debug) log(`
-          swipe direction: ${dir}, calling ${this$.actions[dir].length} method(s):
-          ${this$.actions[dir].join('\n')}`
+        if (this$.config.debug) log('\n' +
+          `swipe direction: ${dir}  -  calling ${this$.actions[dir].length} method(s): \n\n` +
+          `${this$.actions[dir].map((fn, i) => `${++i}: ${fn}`).join('\n')}`
         )
 
         this$.actions[dir].forEach(fn => fn.call(this$.element, e))
