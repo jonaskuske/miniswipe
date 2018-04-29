@@ -20,7 +20,6 @@
     const this$ = {
       xDown: null,
       yDown: null,
-      active: false,
       actions: { right: [], left: [], up: [], down: [] },
       handleTouchMove(e) {
         const dir = this$.getSwipeDirection(e)
@@ -31,7 +30,7 @@
           ${this$.actions[dir].join('\n')}`
         )
 
-        this$.actions[dir].forEach(fn => fn.call(this))
+        this$.actions[dir].forEach(fn => fn.call(this$.element, e))
       },
       getSwipeDirection(evt) {
         if (!this$.xDown || !this$.yDown) return
@@ -60,6 +59,7 @@
     class SwipeHandler {
 
       constructor(element, options) {
+        this.active = false;
         this$.config = options || {}
         this$.element = typeof element === 'string' ? document.querySelector(element) : element
         this$.element.addEventListener('touchstart', e => {
@@ -72,9 +72,9 @@
        * Start listening for touch gestures
        */
       start() {
-        if (this$.active) error('Can\'t start swipeHandler - it is running already.')
+        if (this.active) error('Can\'t start swipeHandler - it is running already.')
         this$.element.addEventListener('touchmove', this$.handleTouchMove)
-        this$.active = true
+        this.active = true
         return this
       }
 
@@ -82,9 +82,9 @@
        * Stop listening for touch gestures
        */
       stop() {
-        if (!this$.active) error('Can\'t stop swipeHandler - it is inactive already.')
+        if (!this.active) error('Can\'t stop swipeHandler - it is inactive already.')
         this$.element.removeEventListener('touchmove', this$.handleTouchMove)
-        this$.active = false
+        this.active = false
         return this
       }
 
