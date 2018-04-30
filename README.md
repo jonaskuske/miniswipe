@@ -23,9 +23,10 @@ This library is in an **early state**, built mostly for educational purposes and
 const newHandler = new Miniswipe(document.body, { debug: false, allowClick: true })
 ```
 ##### Arguments:
-`{string | HTMLElement} The element on which the handler listens for touch gestures`  
-`{Object} Options`  
-`{Options.allowClick} If set to true, miniswipe will handle not only touch events but mouse gestures as well`  
+`{string | HTMLElement} The element on which the handler listens for touch gestures`
+`{Object} Options`
+`{Options.allowClick} If set to true, miniswipe will handle not only touch events but mouse gestures as well`
+`{Options.allowMouseLeave} If set to true, miniswipe will allow swipes to end with the cursor leaving the target element (otherwise only a mouseup event on the element will count as a swipe)`
 `{Options.debug} If set to true, miniswipe will log every registered swipe and the subsequently executed functions`
 ### `left`,`right`,`up`,`down`
 #### Associate methods with swipe gestures
