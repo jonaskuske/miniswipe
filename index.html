@@ -146,7 +146,7 @@
 
         swipeHandler = createMiniswipe({ debug: true, allowClick: false })
 
-        const getLabel = ({ id }) => document.querySelector(`label[for=${id}]`)
+        const getLabel = ({ id, labels }) => labels && labels[0] || document.querySelector(`label[for=${id}]`)
         const toggleMiniswipe = document.querySelector('#toggle-miniswipe')
         const toggleMouse = document.querySelector('#toggle-mouse')
         const toggleMouseLeave = document.querySelector('#toggle-mouseleave')
