@@ -80,8 +80,9 @@
         if (this.active) error('Can\'t start swipeHandler - it is running already.')
 
         this$.element.addEventListener('touchmove', this$.handleTouchMove)
-        const { allowClick } = this$.config
+        const { allowClick, allowMouseLeave } = this$.config
         allowClick && this$.element.addEventListener('mouseup', this$.handleTouchMove)
+        allowClick && allowMouseLeave && this$.element.addEventListener('mouseleave', this$.handleTouchMove)
         this.active = true
 
         return this
@@ -94,6 +95,7 @@
         if (!this.active) error('Can\'t stop swipeHandler - it is inactive already.')
 
         this$.element.removeEventListener('mouseup', this$.handleTouchMove)
+        this$.element.removeEventListener('mouseleave', this$.handleTouchMove)
         this$.element.removeEventListener('touchmove', this$.handleTouchMove)
         this.active = false
 
