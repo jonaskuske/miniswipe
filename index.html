@@ -84,7 +84,7 @@
       label::before {
         content: attr(data-state);
         position: absolute;
-        width: 100%;
+        width: 150%;
         top: -1.5rem;
         pointer-events: none;
         color: rgba(255, 255, 255, 0.5);
@@ -93,6 +93,15 @@
       input:checked+label {
         background: rgba(0, 0, 0, 0.5);
         border: 2px solid white;
+      }
+
+      .fade {
+        transition: opacity 300ms ease-out;
+      }
+
+      .hide {
+        opacity: 0;
+        pointer-events: none;
       }
     </style>
   </head>
@@ -106,7 +115,10 @@
       <label for="toggle-miniswipe" data-state="miniswipe is active">Toggle miniswipe</label>
       <div></div>
       <input type="checkbox" id="toggle-mouse">
-      <label for="toggle-mouse" data-state="mouse detection is off">Toggle mouse detection</label>
+      <label for="toggle-mouse" data-state="mouse detection is off">Allow mouse detection?</label>
+      <div></div>
+      <input type="checkbox" id="toggle-mouseleave">
+      <label for="toggle-mouseleave" data-state="mouseleave is not allowed" class="hide fade">Allow mouseleave?</label>
     </div>
 
     <script>
@@ -132,19 +144,30 @@
           return miniswipe.start()
         }
 
-        swipeHandler = createMiniswipe({ debug: true, allowClick: false });
+        swipeHandler = createMiniswipe({ debug: true, allowClick: false })
 
         const getLabel = ({ id }) => document.querySelector(`label[for=${id}]`)
+        const toggleMiniswipe = document.querySelector('#toggle-miniswipe')
+        const toggleMouse = document.querySelector('#toggle-mouse')
+        const toggleMouseLeave = document.querySelector('#toggle-mouseleave')
 
-        document.querySelector('#toggle-miniswipe').addEventListener('click', function () {
+        toggleMiniswipe.addEventListener('click', function () {
           swipeHandler.active ? swipeHandler.stop() : swipeHandler.start()
+
           getLabel(this).dataset.state = `miniswipe is ${this.checked ? 'active' : 'not active'}`
         })
-
-        document.querySelector('#toggle-mouse').addEventListener('click', function () {
+        toggleMouse.addEventListener('click', function () {
           swipeHandler.active && swipeHandler.stop()
           swipeHandler = createMiniswipe({ debug: true, allowClick: this.checked })
+
           getLabel(this).dataset.state = `mouse detection is ${this.checked ? 'on' : 'off'}`
+          getLabel(toggleMouseLeave).classList.toggle('hide')
+        })
+        toggleMouseLeave.addEventListener('click', function () {
+          swipeHandler.active && swipeHandler.stop()
+          swipeHandler = createMiniswipe({ debug: true, allowClick: true, allowMouseLeave: this.checked })
+
+          getLabel(this).dataset.state = `mouseleave is ${this.checked ? '' : 'not'} allowed`
         })
       })
     </script>
