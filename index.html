@@ -162,6 +162,7 @@
 
           getLabel(this).dataset.state = `mouse detection is ${this.checked ? 'on' : 'off'}`
           getLabel(toggleMouseLeave).classList.toggle('hide')
+          toggleMouseLeave.checked = false
         })
         toggleMouseLeave.addEventListener('click', function () {
           swipeHandler.active && swipeHandler.stop()
