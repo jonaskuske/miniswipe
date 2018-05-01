@@ -9,6 +9,7 @@
    * @typedef {Object} Options
    * @property {boolean} debug If set to true, miniswipe will log every registered swipe gesture.
    * @property {boolean} allowClick If set to true, miniswipe will also handle mouse gestures.
+   * @property {boolean} allowMouseLeave If set to true, miniswipe allows mouse gestures to end with mouseleave in addition to mouseup
    * @param {string|HTMLElement} element A CSS selector or a DOM Node.
    * @param {Options} options Additional options.
    */
