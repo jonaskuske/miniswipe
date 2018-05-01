@@ -59,3 +59,10 @@ The functions you pass to `left`, `right`, `up` or `down` have the swipe handler
 ```javascript
   if (swipeHandler.active) swipeHandler.stop()
 ```
+## Roadmap
+
+Planned features include:  
+- define a threshold for minimum swipe length  
+- multi-finger support (e.g. two-finger swipe up)  
+- more supported gestures (e.g. pinch-to-zoom, tap, long-tap)  
+- swipe distance tracking
