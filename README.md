@@ -23,14 +23,20 @@ This library is in an **early state**, built mostly for educational purposes and
 const swipeHandler = new Miniswipe(document.body, { debug: false, allowClick: true })
 ```
 ##### Arguments:
-`{string | HTMLElement} The element on which the handler listens for touch gestures`
+`{string | HTMLElement} The element on which the handler listens for touch gestures`  
 `{Object} Options`
 ###### Options
 `{Options.allowClick} If true: miniswipe will handle not only touch events but mouse gestures as well`
 `{Options.allowMouseLeave} If true: allow swipes to end with a mouseleave event rather than just mouseup`
 `{Options.debug} If true: miniswipe will log every registered swipe and the subsequently executed functions`
+  
+  &nbsp;  
+    
+> Note: All methods on the Miniswipe class are chainable (return `this`)
+
 ### `left`,`right`,`up`,`down`
 #### Associate methods with swipe gestures
+> Note: You can call these methods multiple times without issue, e.g. if you call `.left()` twice on the same swipe handler, both passed functions will be run when a leftwards swipe is detected.
 ```javascript
   swipeHandler
     .left(() => console.log('User swiped left!'))
@@ -44,6 +50,9 @@ The functions you pass to `left`, `right`, `up` or `down` have the swipe handler
     console.log(this === event.currentTarget) // > true
   })
 ```
+  &nbsp;  
+  
+  > Note: Miniswipe will throw an error if you `start()` a handler that is already active and vice versa
 ### `start`
 #### Start listening for touch events
 ```javascript
@@ -59,3 +68,10 @@ The functions you pass to `left`, `right`, `up` or `down` have the swipe handler
 ```javascript
   if (swipeHandler.active) swipeHandler.stop()
 ```
+## Roadmap
+
+Planned features include:  
+- define a threshold for minimum swipe length  
+- multi-finger support (e.g. two-finger swipe up)  
+- more supported gestures (e.g. pinch-to-zoom, tap, long-tap)  
+- swipe distance tracking
