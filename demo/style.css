@@ -17,7 +17,8 @@ button {
 p,
 h1,
 label,
-button {
+button,
+a {
   -ms-user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
@@ -39,7 +40,7 @@ p:not(:empty)::before {
 p:empty::after {
   content: 'No swipes registered yet';
 }
-div > div {
+section > div {
   width: 100%;
 }
 input[type=checkbox] {
@@ -71,6 +72,9 @@ label::before {
 input:checked + label {
   background: rgba(0, 0, 0, 0.5);
   border: 2px solid white;
+}
+a, a:visited {
+  color: white;
 }
 .fade {
   transition: opacity 300ms ease-out;
