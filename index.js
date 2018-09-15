@@ -1,3 +1,11 @@
+let passive = false;
+try {
+  const noop = () => { };
+  const opts = Object.defineProperty({}, 'passive', { get() { passive = true; } });
+  window.addEventListener('passive', noop, opts);
+  window.removeEventListener('passive', noop, opts);
+} catch (e) { }
+
 (function (global, indexFn) {
   typeof exports === 'object' && typeof module !== 'undefined'
     ? module.exports = indexFn
@@ -67,7 +75,7 @@
         this$.element.addEventListener('touchstart', e => {
           this$.xDown = e.touches && e.touches[0] && e.touches[0].clientX
           this$.yDown = e.touches && e.touches[0] && e.touches[0].clientY
-        })
+        }, passive ? { passive: true } : false)
         this$.element.addEventListener('mousedown', e => {
           this$.xDown = e.clientX
           this$.yDown = e.clientY
@@ -80,7 +88,7 @@
       start() {
         if (this.active) error('Can\'t start swipeHandler - it is running already.')
 
-        this$.element.addEventListener('touchmove', this$.handleTouchMove)
+        this$.element.addEventListener('touchmove', this$.handleTouchMove, passive ? { passive: true } : false)
         const { allowClick, allowMouseLeave } = this$.config
         allowClick && this$.element.addEventListener('mouseup', this$.handleTouchMove)
         allowClick && allowMouseLeave && this$.element.addEventListener('mouseleave', this$.handleTouchMove)
