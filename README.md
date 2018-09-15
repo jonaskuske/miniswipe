@@ -1,7 +1,6 @@
 # miniswipe
 
 A tiny library designed to handle swipe gestures on touchscreens.
-Written in ES2015+, use Babel for cross-browser support.
 > Warning:
 If you look for a polished, production-grade and feature-rich library for handling touch events, please continue your search.
 This library is in an **early state**, built mostly for educational purposes and not tested thoroughly yet.
