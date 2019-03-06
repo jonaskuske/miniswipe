@@ -3,7 +3,7 @@
 A tiny library designed to handle swipe gestures on touchscreens.
 > Warning:
 If you look for a polished, production-grade and feature-rich library for handling touch events, please continue your search.
-This library is in an **early state**, built mostly for educational purposes and not tested thoroughly yet.
+This library is in an **early state**, built mostly for educational purposes and not tested thoroughly.
 
 ## Installation
 ### NPM
@@ -67,10 +67,3 @@ The functions you pass to `left`, `right`, `up` or `down` have the swipe handler
 ```javascript
   if (swipeHandler.active) swipeHandler.stop()
 ```
-## Roadmap
-
-Planned features include:  
-- define a threshold for minimum swipe length  
-- multi-finger support (e.g. two-finger swipe up)  
-- more supported gestures (e.g. pinch-to-zoom, tap, long-tap)  
-- swipe distance tracking
