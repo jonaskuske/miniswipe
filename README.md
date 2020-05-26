@@ -25,9 +25,9 @@ const swipeHandler = new Miniswipe(document.body, { debug: false, allowClick: tr
 `{string | HTMLElement} The element on which the handler listens for touch gestures`  
 `{Object} Options`
 ###### Options
-`{Options.allowClick} If true: miniswipe will handle not only touch events but mouse gestures as well`
-`{Options.allowMouseLeave} If true: allow swipes to end with a mouseleave event rather than just mouseup`
-`{Options.debug} If true: miniswipe will log every registered swipe and the subsequently executed functions`
+`{Options.allowClick} If true: miniswipe will handle not only touch events but mouse gestures as well`  
+`{Options.allowMouseLeave} If true: allow swipes to end with a mouseleave event rather than just mouseup`  
+`{Options.debug} If true: miniswipe will log every registered swipe and the subsequently executed functions`  
   
   &nbsp;  
     
